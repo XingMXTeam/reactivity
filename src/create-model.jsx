@@ -4,10 +4,12 @@ import Container from './container'
 import Executor from './executor'
 import compare from './util';
 
+// 模型创建器
 export default function createModel(hook, context) {
     const container = new Container(hook)
     const div = document.createElement('div')
     const root = createRoot(div)
+    
     root.render(
         <Executor
             onUpdate={v => {
@@ -15,7 +17,7 @@ export default function createModel(hook, context) {
                 container.notify()
             }}
             hook={() => hook()}
-        />, div
+        />
     )
 
     const useModel = selector => {
@@ -34,8 +36,7 @@ export default function createModel(hook, context) {
                     stateRef.current = newState;
                 }
             }
-
-            container.subscribers.add(subscriber);
+            container.subscribe(subscriber)
             return subscriber;
         }, [container]);
 
